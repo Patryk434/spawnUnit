@@ -1,13 +1,13 @@
 
 import arc.util.*;
-import mindustry.content.*;
+import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.mod.Mod;
 import mindustry.type.UnitType;
 
 public class unitSpawn extends Mod {
-    //register commands that player can invoke in-game
+
     @Override
     public void registerClientCommands(CommandHandler handler){
         handler.<Player>register( "spawn", "<unit> <count> <team>", "Spawn units", (args, player) ->{
@@ -15,84 +15,10 @@ public class unitSpawn extends Mod {
                 player.sendMessage("[red]You are not admin");
                 return;
             }
-            UnitType sunit;
-            switch (args[0]) {
-                case "mono":
-                    sunit = UnitTypes.mono;
-                    break;
-                case "flare":
-                    sunit = UnitTypes.flare;
-                    break;
-                case "eclipse":
-                    sunit = UnitTypes.eclipse;
-                    break;
-                case "horizon":
-                    sunit = UnitTypes.horizon;
-                    break;
-                case "zenith":
-                    sunit = UnitTypes.zenith;
-                    break;
-                case "antumbra":
-                    sunit = UnitTypes.antumbra;
-                    break;
-                case "mace":
-                    sunit = UnitTypes.mace;
-                    break;
-                case "scepter":
-                    sunit = UnitTypes.scepter;
-                    break;
-                case "dagger":
-                    sunit = UnitTypes.dagger;
-                    break;
-                case "crawler":
-                    sunit = UnitTypes.crawler;
-                    break;
-                case "reign":
-                    sunit = UnitTypes.reign;
-                    break;
-                case "fortress":
-                    sunit = UnitTypes.fortress;
-                    break;
-                case "nova":
-                    sunit = UnitTypes.nova;
-                    break;
-                case "pulsar":
-                    sunit = UnitTypes.pulsar;
-                    break;
-                case "quasar":
-                    sunit = UnitTypes.quasar;
-                    break;
-                case "atrax":
-                    sunit = UnitTypes.atrax;
-                    break;
-                case "spircot":
-                    sunit = UnitTypes.spiroct;
-                    break;
-                case "arkyid":
-                    sunit = UnitTypes.arkyid;
-                    break;
-                case "toxopid":
-                    sunit = UnitTypes.toxopid;
-                    break;
-                case "poly":
-                    sunit = UnitTypes.poly;
-                    break;
-                case "mega":
-                    sunit = UnitTypes.mega;
-                    break;
-                case "risso":
-                    sunit = UnitTypes.risso;
-                    break;
-                case "minke":
-                    sunit = UnitTypes.minke;
-                    break;
-                case "bryde":
-                    sunit = UnitTypes.bryde;
-                    break;
-                default:
-                    player.sendMessage("[red]Units: [accent]dagger, mace, fortress, scepter, reign, nova, pulsar, quasar, crawler, atrax, spiroct, arkyid, toxopid, flare, horizon, zenith, antumbrae, eclipse, mono, poly, mega, risso, minke, bryde.");
-                    return;
-            }
+
+            UnitType sunit = Vars.content.units().
+                    find(b -> b.name.equals(args[0]));
+
             int count;
             try {
                 count = Integer.parseInt(args[1]);
@@ -126,11 +52,14 @@ public class unitSpawn extends Mod {
             }
 
             for (int i = 0; count > i; i++) {
-                Unit tunit = sunit.create(tteam);
-                tunit.set(Float.parseFloat(String.valueOf(player.getX())), Float.parseFloat(String.valueOf(player.getY())));
-                tunit.add();
+                if (sunit != null) {
+                    Unit tunit = sunit.spawn(tteam, player.x, player.y);
+                    player.sendMessage("[green]You are spawning" + " " +"[accent]"+count + " " +"[accent]"+sunit + " " + "[green]for" + " " +"[accent]"+tteam + " " + "[green]team");
+                } else {
+                    player.sendMessage("[red]Units: [accent]dagger, mace, fortress, scepter, reign, nova, pulsar, quasar, crawler, atrax, spiroct, arkyid, toxopid, mono, poly, mega, flare, eclipse, horizon, zenith, antumbra, risso, minke, bryde");
+                }
+
             }
-            player.sendMessage("[green]You are spawning" + " " +"[accent]"+count + " " +"[accent]"+sunit + " " + "[green]for" + " " +"[accent]"+tteam + " " + "[green]team");
 
         });
     }
