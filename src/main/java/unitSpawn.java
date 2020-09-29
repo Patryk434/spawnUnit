@@ -51,14 +51,13 @@ public class unitSpawn extends Mod {
                     return;
             }
 
-            for (int i = 0; count > i; i++) {
-                if (sunit != null) {
+            if (sunit != null) {
+                for (int i = 0; count > i; i++) {
                     Unit tunit = sunit.spawn(tteam, player.x, player.y);
-                    player.sendMessage("[green]You are spawning" + " " +"[accent]"+count + " " +"[accent]"+sunit + " " + "[green]for" + " " +"[accent]"+tteam + " " + "[green]team");
-                } else {
-                    player.sendMessage("[red]Units: [accent]dagger, mace, fortress, scepter, reign, nova, pulsar, quasar, vela, corvus, crawler, atrax, spiroct, arkyid, toxopid, mono, poly, mega, quad, oct, flare, eclipse, horizon, zenith, antumbra, risso, minke, bryde, sei, omura");
                 }
-
+                player.sendMessage("[green]You are spawning" + " " +"[accent]"+count + " " +"[accent]"+sunit + " " + "[green]for" + " " +"[accent]"+tteam + " " + "[green]team");
+            } else {
+                player.sendMessage("[red]Units: [accent]dagger, mace, fortress, scepter, reign, nova, pulsar, quasar, vela, corvus, crawler, atrax, spiroct, arkyid, toxopid, mono, poly, mega, quad, oct, flare, eclipse, horizon, zenith, antumbra, risso, minke, bryde, sei, omura");
             }
 
         });
